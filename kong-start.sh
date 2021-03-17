@@ -44,7 +44,7 @@ docker-compose up -d prometheus node_exporter
 
 echo "Prometheus running http://0.0.0.0:9090/"
 
-echo "Starting Splunk..."
+echo "Starting Graylog..."
 
 docker-compose up -d graylog elasticsearch mongo_graylog
 
