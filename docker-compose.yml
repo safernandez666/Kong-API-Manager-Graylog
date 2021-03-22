@@ -181,17 +181,6 @@ services:
       - GRAYLOG_TIMEZONE=America/Argentina/Buenos_Aires
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       - GRAYLOG_HTTP_EXTERNAL_URI=http://api.local:9000/
-      - GRAYLOG_TRANSPORT_EMAIL_ENABLED= "true"
-      - GRAYLOG_TRANSPORT_EMAIL_HOSTNAME= smtp.hostinger.com.ar
-      - GRAYLOG_TRANSPORT_EMAIL_PORT= 587
-      - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH= "true"
-      - GRAYLOG_TRANSPORT_EMAIL_USE_TLS= "true"
-      - GRAYLOG_TRANSPORT_EMAIL_USE_SSL= "false"
-      - GRAYLOG_TRANSPORT_EMAIL_AUTH_USERNAME = graylog@ironbox.com.ar
-      - GRAYLOG_TRANSPORT_EMAIL_AUTH_PASSWORD = Jupiter34
-      - GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX = [graylog2]
-      - GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL = graylog@ironbox.com.ar
-      - GRAYLOG_TRANSPORT_EMAIL_FROM_NAME = Graylog2
     entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
     restart: always
     depends_on:
