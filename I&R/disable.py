@@ -45,6 +45,7 @@ def eliminar(data):
 
 # Main Program
 if __name__ == "__main__":
+
     temp = sys.stdout #store original stdout object for later
     sys.stdout = open('log.txt','w') #redirect all prints to this log file
     # Print out all input arguments.
@@ -55,7 +56,7 @@ if __name__ == "__main__":
 
     # Load JSON
     event_data = json.loads(std_in_string)
-    print (event_data)
+
     # Extract some values from the JSON.
     sys.stdout.write("Values from JSON: \n")
     sys.stdout.write("Event Definition ID: " + event_data["event_definition_id"] + "\n")
@@ -73,7 +74,11 @@ if __name__ == "__main__":
 
     # Extraigo Direccion IP del log.txt
     ip = extract_ip()
-    id = bloqueo(ip)
-    countdown(10)
-    eliminar(id)
+    # Block IP
+    id_block = bloqueo(ip)
+    # Time Rule Life 5 Seg
+    countdown(50)
+    # Delete the Rule
+    eliminar(id_block)
+
     exit(0)
