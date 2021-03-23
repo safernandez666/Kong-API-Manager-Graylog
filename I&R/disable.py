@@ -15,7 +15,8 @@ def extract_ip():
     with open('log.txt', 'r') as file:
         data = file.read().replace('\n', '')
     string = "client_ip"
-    ip = (data[data.index(string)+11:data.index(string)+26]).strip('"\'')
+    ip = (data[data.index(string)+11:data.index(string)+26])
+    ip = ip[1:-2]
     return ip
 
 # Count Time
@@ -33,13 +34,10 @@ def bloqueo(client_ip):
             'config.deny':client_ip}
     r = requests.post(url, data)
     data = r.json()
-    sys.stdout.write('Bloqueado: %s' % data['config']['deny'])
     return data
 
 # Delete API Manager Rule
 def eliminar(data):
-    sys.stdout.write('El ID del Plugin es: %s' % data['id'])
-    sys.stdout.write('Desbloqueo: %s' % data['config']['deny'])
     r = requests.delete(url + '/' + data['id'])
     return r.status_code
 
@@ -72,12 +70,21 @@ if __name__ == "__main__":
     sys.stdout.close()
     sys.stdout = temp
 
-    # Extraigo Direccion IP del log.txt
+    temp = sys.stdout #store original stdout object for later
+    sys.stdout = open('ip_block.txt','w') #redirect all prints to this log file
+
+    # IP a Bloquear
     ip = extract_ip()
-    # Block IP
+    sys.stdout.write("Direccion IP: " + ip + "\n")
+
+     # Block IP
     id_block = bloqueo(ip)
-    # Time Rule Life 5 Seg
-    countdown(50)
+    sys.stdout.write("ID del Bloqueo: " + str(id_block['id']) + "/n")
+    sys.stdout.close()
+    sys.stdout = temp
+    # Time Rule Life 1 Minute
+    countdown(60)
+
     # Delete the Rule
     eliminar(id_block)
 
