@@ -3,7 +3,8 @@ import json
 import sys
 import time
 import requests
-
+import os 
+import re
 url = 'http://kong:8001/services/MyAPI/plugins'
 
 # Function that prints text to standard error
@@ -12,11 +13,14 @@ def print_stderr(*args, **kwargs):
 
 # Funcion Extract IP
 def extract_ip():
+    # Patron de Direccion IP
+    pattern = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
+
     with open('log.txt', 'r') as file:
         data = file.read().replace('\n', '')
-    string = "client_ip"
-    ip = (data[data.index(string)+11:data.index(string)+26])
-    ip = ip[1:-2]
+    string = '"client_ip"'
+    ip_add = (data[data.index(string)+9:data.index(string)+32])
+    ip = (pattern.search(ip_add)[0])
     return ip
 
 # Count Time
@@ -87,5 +91,6 @@ if __name__ == "__main__":
 
     # Delete the Rule
     eliminar(id_block)
-
+    os.remove('ip_block.txt')
+    os.remove('log.txt')
     exit(0)

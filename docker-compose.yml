@@ -29,7 +29,7 @@ services:
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   kong-database:
-    image: postgres:12-alpine
+    image: postgres:9.6
     container_name: kong-database
     environment:
       - POSTGRES_USER=kong
@@ -39,7 +39,7 @@ services:
       - pg_data:/var/lib/postgresql/data
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U kong"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -82,7 +82,7 @@ services:
       - KONG_TRUSTED_IPS=0.0.0.0/0,::/0
       - KONG_REAL_IP_RECURSIVE=on
     healthcheck:
-      test: ["CMD", "wget", "-O-", "http://127.0.0.1:8001/status"]
+      test: ["CMD", "wget", "-O-", "http://kong:8001/status"]
       interval: 30s
       timeout: 20s
       retries: 5
